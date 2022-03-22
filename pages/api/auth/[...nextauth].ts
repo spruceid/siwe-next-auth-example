@@ -61,9 +61,6 @@ export default async function auth(req, res) {
     jwt: {
       secret: process.env.JWT_SECRET,
     },
-    theme: {
-      colorScheme: "dark",
-    },
     secret: process.env.NEXT_AUTH_SECRET,
     callbacks: {
       async session({ session, token }) {
