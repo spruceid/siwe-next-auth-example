@@ -1,8 +1,8 @@
 # Sign-In with Ethereum and NextAuth.js Example
 
 NextAuth.js is an easy to implement, full-stack (client/server) open source 
-authentication library originally designed for (Next.js)[https://nextjs.org/] 
-and (Serverless)[https://vercel.com/dashboard]. Go to https://next-auth.js.org 
+authentication library originally designed for [Next.js](https://nextjs.org/) 
+and [Serverless](https://vercel.com/dashboard). Go to https://next-auth.js.org 
 for more information and documentation.
 
 ## Getting started
@@ -21,7 +21,7 @@ DOMAIN=example.com
 ```
 
 Add `siwe` and `wagmi` as dependencies, in this example 
-(Wagmi)[https://github.com/tmm/wagmi] is being used, feel free to handle wallet 
+[Wagmi](https://github.com/tmm/wagmi) is being used, feel free to handle wallet 
 interactions using any method.
 ```
 yarn add siwe wagmi
