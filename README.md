@@ -6,40 +6,61 @@ and [Serverless](https://vercel.com/dashboard). Go to https://next-auth.js.org
 for more information and documentation.
 
 ## Getting started
-Start by cloning the official NextAuth.js example:
+
+### Requirements
+- [Yarn](https://classic.yarnpkg.com/en/docs/getting-started)
+- [Node.js](https://nodejs.org/en/)
+- [Metamask broswer extension wallet](https://metamask.io/)
+
+First clone the official NextAuth.js example using your terminal:
 ```
 git clone https://github.com/nextauthjs/next-auth-example
 ```
 
-Create a `.env` file if it doesn't already exists and populate it with the 
-following variables:
+After cloning, modify the given .env.local.example file, and populate it with the following variables:
 ```
 NEXTAUTH_SECRET=somereallysecretsecret
 JWT_SECRET=itshouldbealsoverysecret
 # This domain will be used for validation so it must match the front-end domain
 DOMAIN=example.com
 ```
+*Note: After this, rename the file to .env. This example will be routed to http://localhost:3000.*
 
-Add `siwe` and `wagmi` as dependencies, in this example 
-[Wagmi](https://github.com/tmm/wagmi) is being used, feel free to handle wallet 
-interactions using any method.
-```
+Next Add siwe and wagmi as dependencies. In this example, we're using [Wagmi](https://github.com/tmm/wagmi), 
+which is a well-known React hooks library for Ethereum. In your terminal, 
+navigate to the project we originally cloned and add the dependencies via the 
+following commands: 
+
+```bash
+cd next-auth-example
 yarn add siwe wagmi
 ```
 
-Modify `pages/_app.tsx` to inject the `WagmiProvider` component:
-```diff
-+<WagmiProvider autoConnect>
-    <SessionProvider session={pageProps.session} refetchInterval={0}>
+Now, modify pages/_app.tsx to inject the WagmiProvider component:
+```jsx
+import { SessionProvider } from "next-auth/react"
+import type { AppProps } from "next/app"
+import "./styles.css"
+import { WagmiProvider } from "wagmi"
+
+// Use of the <SessionProvider> is mandatory to allow components that call
+// `useSession()` anywhere in your application to access the `session` object.
+export default function App({ Component, pageProps }: AppProps) {
+  return (
+    <WagmiProvider autoConnect>
+      <SessionProvider session={pageProps.session} refetchInterval={0}>
         <Component {...pageProps} />
-    </SessionProvider>
-+</WagmiProvider>
+      </SessionProvider>
+    </WagmiProvider>
+  )
+}
 ```
 
-Add the provider that will handle the message validation, since it's not 
-possible to sign-in using the default page the provider should be removed from 
-the list of providers before render, make sure your 
-`pages/api/auth/[...nextauth].ts` looks similar to the following:
+We're going to now add the provider that will handle the message validation. 
+Since it's not possible to sign in using the default page, the original provider
+should be removed from the list of providers before rendering. 
+Modify pages/api/auth/[...nextauth].ts with the following:
+
 ```javascript
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
@@ -120,9 +141,11 @@ export default async function auth(req, res) {
 
 ```
 
-As mentioned the default sign-in page can't be used because there is no way to 
-hook Wagmi to listen for clicks, so a custom page must be created to handle the 
-sign-in. Create pages/siwe.tsx and add the following to it:
+The default sign-in page can't be used because there is no way to hook wagmi to 
+listen for clicks on the default sign-in page provided by next-auth, so a custom
+page must be created to handle the sign-in flow. Create pages/siwe.tsx and 
+populate it with the following:
+
 ```javascript
 import { getCsrfToken, signIn } from 'next-auth/react'
 import { SiweMessage } from 'siwe'
@@ -176,8 +199,9 @@ export default Siwe
 
 ```
 
-Now all left to do is adding a new link to the newly created page, in order to 
-do so go to components/header.tsx and add a link to it:
+Finally, add a new navigation link that leads to the page we just created. In 
+order to do so go to components/header.tsx and add an additional link to the 
+list of navigation items:
 ```diff
 +<li className={styles.navItem}>
 +    <Link href="/siwe">
@@ -186,6 +210,8 @@ do so go to components/header.tsx and add a link to it:
 +</li>
 ```
 
-Run the application and you are now ready to Sign-In with Ethereum, just click 
-the SIWE link in the header and the Sign-In with Ethereum button, sign the 
-message and you are now authenticated.
+Run the application using the following commands:
+```bash
+yarn
+yarn dev
+```
