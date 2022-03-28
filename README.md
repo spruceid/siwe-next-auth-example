@@ -5,7 +5,19 @@ to help developers get their hands on a fully functional and easy to understand 
 
 The tutorial can be found [here](https://docs.login.xyz).
 
-_You can use the following commands to run the example:_
+## Running the Example
+
+Add the following to `.env.local.example` in order to run the application:
+
+```
+NEXTAUTH_SECRET=somereallysecretsecret
+JWT_SECRET=itshouldbealsoverysecret
+DOMAIN=localhost:3000
+```
+
+Once updated, rename the file to `.env`. 
+
+You can then use the following commands to run the example:
 
 ```bash
 yarn install
