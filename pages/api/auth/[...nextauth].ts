@@ -24,8 +24,8 @@ export default async function auth(req, res) {
       async authorize(credentials) {
         try {
           const siwe = new SiweMessage(JSON.parse(credentials?.message || "{}"))
-          const domain = process.env.DOMAIN
-          if (siwe.domain !== domain) {
+          const nextAuthUrl = new URL(process.env.NEXTAUTH_URL)
+          if (siwe.domain !== nextAuthUrl.host) {
             return null
           }
 
@@ -58,14 +58,12 @@ export default async function auth(req, res) {
     session: {
       strategy: "jwt",
     },
-    jwt: {
-      secret: process.env.JWT_SECRET,
-    },
-    secret: process.env.NEXT_AUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
       async session({ session, token }) {
         session.address = token.sub
         session.user.name = token.sub
+        session.user.image = 'https://www.fillmurray.com/128/128'
         return session
       },
     },

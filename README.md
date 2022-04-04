@@ -5,17 +5,14 @@ to help developers get their hands on a fully functional and easy to understand 
 
 The tutorial can be found [here](https://docs.login.xyz).
 
-## Running the Example
+## Getting Started
 
-Add the following to `.env.local.example` in order to run the application:
+Make a copy of `.env.local.example` to `.env.local`, and fill in the following two values. For example:
 
 ```
+NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=somereallysecretsecret
-JWT_SECRET=itshouldbealsoverysecret
-DOMAIN=localhost:3000
 ```
-
-Once updated, rename the file to `.env`. 
 
 You can then use the following commands to run the example:
 
