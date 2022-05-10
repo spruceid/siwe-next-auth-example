@@ -24,19 +24,18 @@ export default async function auth(req, res) {
       async authorize(credentials) {
         try {
           const siwe = new SiweMessage(JSON.parse(credentials?.message || "{}"))
-          const nextAuthUrl = new URL(process.env.NEXTAUTH_URL)
-          if (siwe.domain !== nextAuthUrl.host) {
-            return null
-          }
+          const result = await siwe.verify({
+            signature: credentials?.signature || "",
+            domain: new URL(process.env.NEXTAUTH_URL).host,
+            nonce: await getCsrfToken({ req }),
+          })
 
-          if (siwe.nonce !== (await getCsrfToken({ req }))) {
-            return null
+          if (result.success) {
+            return {
+              id: siwe.address,
+            }
           }
-
-          await siwe.validate(credentials?.signature || "")
-          return {
-            id: siwe.address,
-          }
+          return null
         } catch (e) {
           return null
         }
