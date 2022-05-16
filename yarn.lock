@@ -1872,10 +1872,10 @@ sha.js@^2.4.0, sha.js@^2.4.8:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-siwe@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/siwe/-/siwe-2.0.2.tgz#e39e8aa73a5a651d5486d22163dd07ea49c26376"
-  integrity sha512-D4tdwlKpSSPVkpVKKStzAYSfP9nxkVAjJTzsAdTnt4RyprWhy+bUtHdVNv0k9hZrwFDQz08BzyVxQS0gTEvqng==
+siwe@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/siwe/-/siwe-2.0.3.tgz#32df0bb81daa08691c2ba376669a1d4fff2d6261"
+  integrity sha512-mc0KeN50JMoz+bnt7+PSNSOv2b7vehZ6tkJb6oq+FK1zWkfo1G5DVMmQTU5K3XgPLn4NgqlHyBhU2o18Rr1HCA==
   dependencies:
     "@spruceid/siwe-parser" "2.0.0"
     "@stablelib/random" "^1.0.1"
