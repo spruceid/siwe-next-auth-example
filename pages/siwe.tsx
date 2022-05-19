@@ -5,22 +5,20 @@ import Layout from "../components/layout"
 
 
 function Siwe() {
-  const [{ data: connectData }, connect] = useConnect()
+  const [{ data: connectData }, connectAsync] = useConnect()
   const [, signMessage] = useSignMessage()
-  const [{ data: networkData }] = useNetwork()
-  const [{ data: accountData }] = useAccount();
 
   const handleLogin = async () => {
     try {
-      await connect(connectData.connectors[0]);
+      const res = await connectAsync(connectData.connectors[0]);
       const callbackUrl = '/protected';
       const message = new SiweMessage({
         domain: window.location.host,
-        address: accountData?.address,
+        address: res.account,
         statement: 'Sign in with Ethereum to the app.',
         uri: window.location.origin,
         version: '1',
-        chainId: networkData?.chain?.id,
+        chainId: res.chain?.id,
         nonce: await getCsrfToken()
       });
       const {data: signature, error} = await signMessage({ message: message.prepareMessage() });
