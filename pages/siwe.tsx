@@ -14,11 +14,11 @@ function Siwe() {
       const callbackUrl = '/protected';
       const message = new SiweMessage({
         domain: window.location.host,
-        address: res.account,
+        address: res.data?.account,
         statement: 'Sign in with Ethereum to the app.',
         uri: window.location.origin,
         version: '1',
-        chainId: res.chain?.id,
+        chainId: res.data?.chain?.id,
         nonce: await getCsrfToken()
       });
       const {data: signature, error} = await signMessage({ message: message.prepareMessage() });
