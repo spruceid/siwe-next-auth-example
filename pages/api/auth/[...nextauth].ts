@@ -5,7 +5,7 @@ import { SiweMessage } from "siwe"
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
-export default async function auth(req, res) {
+export default async function auth(req: any, res: any) {
   const providers = [
     CredentialsProvider({
       name: "Ethereum",
@@ -61,10 +61,10 @@ export default async function auth(req, res) {
     },
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
-      async session({ session, token }) {
+      async session({ session, token }: { session: any; token: any }) {
         session.address = token.sub
         session.user.name = token.sub
-        session.user.image = 'https://www.fillmurray.com/128/128'
+        session.user.image = "https://www.fillmurray.com/128/128"
         return session
       },
     },
