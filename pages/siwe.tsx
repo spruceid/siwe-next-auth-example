@@ -1,12 +1,21 @@
 import { getCsrfToken, signIn } from "next-auth/react"
+import { useEffect } from "react"
 import { SiweMessage } from "siwe"
-import { useAccount, useNetwork, useSignMessage } from "wagmi"
+import { useAccount, useConnect, useNetwork, useSignMessage } from "wagmi"
+import { InjectedConnector } from "wagmi/connectors/injected"
 import Layout from "../components/layout"
 
 function Siwe() {
+  const { connect } = useConnect({ connector: new InjectedConnector() })
   const { signMessageAsync } = useSignMessage()
   const { activeChain } = useNetwork()
   const { data: accountData } = useAccount()
+
+  useEffect(() => {
+    if (!accountData) {
+      connect()
+    }
+  }, [accountData])
 
   const handleLogin = async () => {
     try {

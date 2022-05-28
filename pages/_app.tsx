@@ -1,6 +1,6 @@
 import { SessionProvider } from "next-auth/react"
 import type { AppProps } from "next/app"
-import { WagmiConfig as WagmiProvider, createClient } from "wagmi"
+import { WagmiConfig, createClient } from "wagmi"
 import "./styles.css"
 
 const client = createClient({
@@ -11,10 +11,10 @@ const client = createClient({
 // `useSession()` anywhere in your application to access the `session` object.
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <WagmiProvider client={client}>
+    <WagmiConfig client={client}>
       <SessionProvider session={pageProps.session} refetchInterval={0}>
         <Component {...pageProps} />
       </SessionProvider>
-    </WagmiProvider>
+    </WagmiConfig>
   )
 }
