@@ -1,3 +1,4 @@
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { getCsrfToken, signIn } from "next-auth/react"
 import { SiweMessage } from "siwe"
 import { useAccount, useNetwork, useSignMessage } from "wagmi"
@@ -36,14 +37,18 @@ function Siwe() {
 
   return (
     <Layout>
-      <button
-        onClick={(e) => {
-          e.preventDefault()
-          handleLogin()
-        }}
-      >
-        Sign-in
-      </button>
+      {address ? (
+        <button
+          onClick={(e) => {
+            e.preventDefault()
+            handleLogin()
+          }}
+        >
+          Sign-in
+        </button>
+      ) : (
+        <ConnectButton />
+      )}
     </Layout>
   )
 }

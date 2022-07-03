@@ -23,6 +23,7 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "@rainbow-me/rainbowkit": "^0.4.1",
     "ethers": "^5.6.8",
     "next": "^12.0.11-canary.4",
     "next-auth": "4.2.1",
