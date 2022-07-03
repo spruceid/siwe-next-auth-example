@@ -1,10 +1,17 @@
 import { SessionProvider } from "next-auth/react"
 import type { AppProps } from "next/app"
-import { WagmiConfig, createClient } from "wagmi"
+import { WagmiConfig, createClient, configureChains, chain } from "wagmi"
+import { publicProvider } from "wagmi/providers/public"
 import "./styles.css"
+
+export const { chains, provider } = configureChains(
+  [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum],
+  [publicProvider()]
+)
 
 const client = createClient({
   autoConnect: true,
+  provider,
 })
 
 // Use of the <SessionProvider> is mandatory to allow components that call

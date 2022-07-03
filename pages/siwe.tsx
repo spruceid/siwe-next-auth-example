@@ -1,32 +1,23 @@
 import { getCsrfToken, signIn } from "next-auth/react"
-import { useEffect } from "react"
 import { SiweMessage } from "siwe"
-import { useAccount, useConnect, useNetwork, useSignMessage } from "wagmi"
-import { InjectedConnector } from "wagmi/connectors/injected"
+import { useAccount, useNetwork, useSignMessage } from "wagmi"
 import Layout from "../components/layout"
 
 function Siwe() {
-  const { connect } = useConnect({ connector: new InjectedConnector() })
   const { signMessageAsync } = useSignMessage()
-  const { activeChain } = useNetwork()
-  const { data: accountData } = useAccount()
-
-  useEffect(() => {
-    if (!accountData) {
-      connect()
-    }
-  }, [accountData])
+  const { chain } = useNetwork()
+  const { address } = useAccount()
 
   const handleLogin = async () => {
     try {
       const callbackUrl = "/protected"
       const message = new SiweMessage({
         domain: window.location.host,
-        address: accountData?.address,
+        address: address,
         statement: "Sign in with Ethereum to the app.",
         uri: window.location.origin,
         version: "1",
-        chainId: activeChain?.id,
+        chainId: chain?.id,
         nonce: await getCsrfToken(),
       })
       const signature = await signMessageAsync({
