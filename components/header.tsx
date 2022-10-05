@@ -1,5 +1,6 @@
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
+import { useDisconnect } from "wagmi"
 import styles from "./header.module.css"
 
 // The approach used in this component shows how to build a sign in and sign out
@@ -8,6 +9,7 @@ import styles from "./header.module.css"
 export default function Header() {
   const { data: session, status } = useSession()
   const loading = status === "loading"
+  const { disconnect } = useDisconnect()
 
   return (
     <header>
@@ -43,6 +45,7 @@ export default function Header() {
                 className={styles.button}
                 onClick={(e) => {
                   e.preventDefault()
+                  disconnect()
                   signOut()
                 }}
               >

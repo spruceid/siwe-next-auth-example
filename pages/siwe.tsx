@@ -1,13 +1,18 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { getCsrfToken, signIn } from "next-auth/react"
+import { getCsrfToken, signIn, useSession } from "next-auth/react"
 import { SiweMessage } from "siwe"
-import { useAccount, useNetwork, useSignMessage } from "wagmi"
+import { useAccount, useConnect, useNetwork, useSignMessage } from "wagmi"
 import Layout from "../components/layout"
+import { InjectedConnector } from 'wagmi/connectors/injected'
+import { useEffect, useState } from "react"
 
 function Siwe() {
   const { signMessageAsync } = useSignMessage()
   const { chain } = useNetwork()
-  const { address } = useAccount()
+  const { address, isConnected } = useAccount()
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
+  const { data: session, status } = useSession()
 
   const handleLogin = async () => {
     try {
@@ -35,20 +40,27 @@ function Siwe() {
     }
   }
 
+  useEffect(() => {
+    console.log(isConnected);
+    if (isConnected && !session) {
+      handleLogin()
+    }
+  }, [isConnected])
+
   return (
     <Layout>
-      {address ? (
-        <button
-          onClick={(e) => {
-            e.preventDefault()
+      <button
+        onClick={(e) => {
+          e.preventDefault()
+          if (!isConnected) {
+            connect()
+          } else {
             handleLogin()
-          }}
-        >
-          Sign-in
-        </button>
-      ) : (
-        <ConnectButton />
-      )}
+          }
+        }}
+      >
+        Sign-in
+      </button>
     </Layout>
   )
 }
