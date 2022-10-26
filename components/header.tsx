@@ -40,7 +40,7 @@ export default function Header() {
                 <br />
                 <strong>{session.user.email ?? session.user.name}</strong>
               </span>
-              <a
+              <Link
                 href={`/api/auth/signout`}
                 className={styles.button}
                 onClick={(e) => {
@@ -50,7 +50,7 @@ export default function Header() {
                 }}
               >
                 Sign out
-              </a>
+              </Link>
             </>
           )}
         </p>
@@ -59,12 +59,12 @@ export default function Header() {
         <ul className={styles.navItems}>
           <li className={styles.navItem}>
             <Link href="/">
-              <a>Home</a>
+              Home
             </Link>
           </li>
           <li className={styles.navItem}>
             <Link href="/siwe">
-              <a>SIWE</a>
+              SIWE
             </Link>
           </li>
         </ul>
