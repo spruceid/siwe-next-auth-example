@@ -29,7 +29,7 @@ export default async function auth(req: any, res: any) {
           const result = await siwe.verify({
             signature: credentials?.signature || "",
             domain: nextAuthUrl.host,
-            nonce: await getCsrfToken({ req }),
+            nonce: await getCsrfToken({ req: { headers: req.headers }}),
           })
 
           if (result.success) {
