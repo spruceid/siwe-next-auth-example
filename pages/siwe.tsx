@@ -1,9 +1,9 @@
-import { getCsrfToken, signIn, useSession } from 'next-auth/react'
-import { SiweMessage } from 'siwe'
-import { useAccount, useConnect, useNetwork, useSignMessage } from 'wagmi'
-import Layout from '../components/layout'
-import { InjectedConnector } from 'wagmi/connectors/injected'
-import { useEffect, useState } from 'react'
+import { getCsrfToken, signIn, useSession } from "next-auth/react"
+import { SiweMessage } from "siwe"
+import { useAccount, useConnect, useNetwork, useSignMessage } from "wagmi"
+import Layout from "../components/layout"
+import { InjectedConnector } from "wagmi/connectors/injected"
+import { useEffect, useState } from "react"
 
 function Siwe() {
   const { signMessageAsync } = useSignMessage()
@@ -16,20 +16,20 @@ function Siwe() {
 
   const handleLogin = async () => {
     try {
-      const callbackUrl = '/protected'
+      const callbackUrl = "/protected"
       const message = new SiweMessage({
         domain: window.location.host,
         address: address,
-        statement: 'Sign in with Ethereum to the app.',
+        statement: "Sign in with Ethereum to the app.",
         uri: window.location.origin,
-        version: '1',
+        version: "1",
         chainId: chain?.id,
         nonce: await getCsrfToken(),
       })
       const signature = await signMessageAsync({
         message: message.prepareMessage(),
       })
-      signIn('credentials', {
+      signIn("credentials", {
         message: JSON.stringify(message),
         redirect: true,
         signature,
