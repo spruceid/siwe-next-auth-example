@@ -1,22 +1,22 @@
-import { getCsrfToken, signIn, useSession } from "next-auth/react";
-import { SiweMessage } from "siwe";
-import { useAccount, useConnect, useNetwork, useSignMessage } from "wagmi";
-import Layout from "../components/layout";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { useEffect, useState } from "react";
+import { getCsrfToken, signIn, useSession } from "next-auth/react"
+import { SiweMessage } from "siwe"
+import { useAccount, useConnect, useNetwork, useSignMessage } from "wagmi"
+import Layout from "../components/layout"
+import { InjectedConnector } from "wagmi/connectors/injected"
+import { useEffect, useState } from "react"
 
 function Siwe() {
-  const { signMessageAsync } = useSignMessage();
-  const { chain } = useNetwork();
-  const { address, isConnected } = useAccount();
+  const { signMessageAsync } = useSignMessage()
+  const { chain } = useNetwork()
+  const { address, isConnected } = useAccount()
   const { connect } = useConnect({
     connector: new InjectedConnector(),
-  });
-  const { data: session, status } = useSession();
+  })
+  const { data: session, status } = useSession()
 
   const handleLogin = async () => {
     try {
-      const callbackUrl = "/protected";
+      const callbackUrl = "/protected"
       const message = new SiweMessage({
         domain: window.location.host,
         address: address,
@@ -25,44 +25,44 @@ function Siwe() {
         version: "1",
         chainId: chain?.id,
         nonce: await getCsrfToken(),
-      });
+      })
       const signature = await signMessageAsync({
         message: message.prepareMessage(),
-      });
+      })
       signIn("credentials", {
         message: JSON.stringify(message),
         redirect: true,
         signature,
         callbackUrl,
-      });
+      })
     } catch (error) {
-      window.alert(error);
+      window.alert(error)
     }
-  };
+  }
 
   useEffect(() => {
-    console.log(isConnected);
+    console.log(isConnected)
     if (isConnected && !session) {
-      handleLogin();
+      handleLogin()
     }
-  }, [isConnected]);
+  }, [isConnected])
 
   return (
     <Layout>
       <button
         onClick={(e) => {
-          e.preventDefault();
+          e.preventDefault()
           if (!isConnected) {
-            connect();
+            connect()
           } else {
-            handleLogin();
+            handleLogin()
           }
         }}
       >
         Sign-in
       </button>
     </Layout>
-  );
+  )
 }
 
 export async function getServerSideProps(context: any) {
@@ -70,9 +70,9 @@ export async function getServerSideProps(context: any) {
     props: {
       csrfToken: await getCsrfToken(context),
     },
-  };
+  }
 }
 
-Siwe.Layout = Layout;
+Siwe.Layout = Layout
 
-export default Siwe;
+export default Siwe
