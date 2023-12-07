@@ -2,7 +2,7 @@ import { getCsrfToken, signIn, useSession } from "next-auth/react"
 import { SiweMessage } from "siwe"
 import { useAccount, useConnect, useNetwork, useSignMessage } from "wagmi"
 import Layout from "../components/layout"
-import { InjectedConnector } from 'wagmi/connectors/injected'
+import { InjectedConnector } from "wagmi/connectors/injected"
 import { useEffect, useState } from "react"
 
 function Siwe() {
@@ -11,7 +11,7 @@ function Siwe() {
   const { address, isConnected } = useAccount()
   const { connect } = useConnect({
     connector: new InjectedConnector(),
-  });
+  })
   const { data: session, status } = useSession()
 
   const handleLogin = async () => {
@@ -31,7 +31,7 @@ function Siwe() {
       })
       signIn("credentials", {
         message: JSON.stringify(message),
-        redirect: false,
+        redirect: true,
         signature,
         callbackUrl,
       })
@@ -41,7 +41,7 @@ function Siwe() {
   }
 
   useEffect(() => {
-    console.log(isConnected);
+    console.log(isConnected)
     if (isConnected && !session) {
       handleLogin()
     }
