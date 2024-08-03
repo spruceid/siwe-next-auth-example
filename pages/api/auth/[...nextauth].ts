@@ -34,7 +34,7 @@ export default async function auth(req: any, res: any) {
 
           if (result.success) {
             return {
-              id: siwe.address,
+              id: result.data.address,
             }
           }
           return null
